@@ -1,47 +1,62 @@
-import { useForm } from 'react-hook-form'
+import { useState } from 'react';
+import { Directus } from "@directus/sdk";
+import { useForm } from 'react-hook-form';
+
 import {
     FormErrorMessage,
     FormLabel,
     FormControl,
     Input,
     Button,
+    Alert,
+    AlertIcon
 } from '@chakra-ui/react'
 
 export default function EnquiryForm() {
+    const [isSuccessfullySubmitted, setIsSuccessfullySubmitted] = useState(false);
+
     const {
         handleSubmit,
         register,
         formState: { errors, isSubmitting },
     } = useForm()
 
-    function onSubmit(values) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                alert(JSON.stringify(values, null, 2))
-                resolve()
-            }, 3000);
-        })
+    async function onSubmit(values) {
+        const directus = new Directus('http://0.0.0.0:8055');
+        const response = await directus.items('Enquiry').createOne({
+            name: values.name,
+        });
+        setIsSuccessfullySubmitted(true);
     }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <FormControl isInvalid={errors.name}>
-                <FormLabel htmlFor='name'>First name</FormLabel>
-                <Input
-                    id='name'
-                    placeholder='name'
-                    {...register('name', {
-                        required: 'This is required',
-                        minLength: { value: 4, message: 'Minimum length should be 4' },
-                    })}
-                />
-                <FormErrorMessage>
-                    {errors.name && errors.name.message}
-                </FormErrorMessage>
-            </FormControl>
-            <Button isLoading={isSubmitting} type='submit'>
-                Submit
-            </Button>
+            {
+                isSuccessfullySubmitted ? 
+                <Alert status='success'>
+                    <AlertIcon />
+                    Your enquiry has been received.
+                </Alert> :
+                <>
+                    <FormControl isInvalid={errors.name}>
+                        <FormLabel htmlFor='name'>First name</FormLabel>
+                        <Input
+                            id='name'
+                            placeholder='name'
+                            {...register('name', {
+                                required: 'This is required',
+                                minLength: { value: 4, message: 'Minimum length should be 4' },
+                            })}
+                        />
+                        <FormErrorMessage>
+                            {errors.name && errors.name.message}
+                        </FormErrorMessage>
+                    </FormControl>
+                    <Button isLoading={isSubmitting} type='submit'>
+                        Submit
+                    </Button>
+                </>
+            }
         </form>
     )
 }
