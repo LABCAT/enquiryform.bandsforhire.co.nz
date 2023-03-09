@@ -22,8 +22,8 @@ export default function EnquiryForm() {
     } = useForm()
 
     async function onSubmit(values) {
-        const directus = new Directus('http://0.0.0.0:8055');
-        const response = await directus.items('Enquiry').createOne({
+        const directus = new Directus('http://bandsforhire.mysite.digital');
+        const response = await directus.items('booking_enquiry').createOne({
             name: values.name,
         });
         setIsSuccessfullySubmitted(true);
