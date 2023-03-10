@@ -22,7 +22,7 @@ export default function EnquiryForm() {
     } = useForm()
 
     async function onSubmit(values) {
-        const directus = new Directus('http://bandsforhire.mysite.digital');
+        const directus = new Directus('https://bandsforhire.mysite.digital');
         const response = await directus.items('booking_enquiry').createOne({
             name: values.name,
         });
