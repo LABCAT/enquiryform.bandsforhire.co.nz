@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import EnquiryForm from './EnquiryForm';
 
-function App() {
+function App(props) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   
   return (
@@ -25,7 +25,7 @@ function App() {
           <ModalHeader>For a free quote fill in the form below</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <EnquiryForm/>
+            <EnquiryForm artistID={props.artistID}/>
           </ModalBody>
         </ModalContent>
       </Modal>

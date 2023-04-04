@@ -6,12 +6,13 @@ import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 
 const container = document.getElementById('root');
+const artistID = container.dataset.artistId;
 const root = ReactDOM.createRoot(container);
 
 root.render(
   <StrictMode>
     <ColorModeScript />
-    <App />
+    <App artistID={artistID} />
   </StrictMode>
 );
 
