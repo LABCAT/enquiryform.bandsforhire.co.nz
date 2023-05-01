@@ -1,0 +1,11 @@
+.chakra-modal__content {
+    padding-bottom: 15px;
+}
+
+.chakra-form-control {
+    margin-bottom: 15px;
+}
+
+.chakra-form-control--last {
+    margin-bottom: 30px;
+}

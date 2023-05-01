@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { Directus } from "@directus/sdk";
 import { useForm } from 'react-hook-form';
+import './enquiry-form.css';
 
 import {
     FormErrorMessage,
     FormLabel,
     FormControl,
     Input,
+    Textarea,
     Button,
     Alert,
     AlertIcon,
@@ -22,6 +24,7 @@ export default function EnquiryForm(props) {
     } = useForm()
 
     async function onSubmit(values) {
+        console.log(values);
         const directus = new Directus('https://bandsforhire.mysite.digital');
         // const directus = new Directus('http://localhost:8055');
         const response = await directus.items('booking_enquiry').createOne({
@@ -29,16 +32,18 @@ export default function EnquiryForm(props) {
             email: values.email,
             phone_number: values.phoneNumber,
             function_type: values.functionType,
+            location: values.location,
             venue_details: values.venueDetails,
             event_date: values.eventDate,
             performance_start_time: values.performanceStartTime,
             performance_duration: values.performanceDuration,
-            budget: values.budget,
             other_details: values.otherDetails,
             artist: props.artistID
         });
         setIsSuccessfullySubmitted(true);
     }
+
+    console.log(errors);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -61,6 +66,10 @@ export default function EnquiryForm(props) {
                         <FormErrorMessage>
                             {errors.name && errors.name.message}
                         </FormErrorMessage>
+                    </FormControl>
+                    
+                    
+                    <FormControl isInvalid={errors.email}>                  
                         <FormLabel htmlFor='email'>Email</FormLabel>
                         <Input
                             id='email'
@@ -73,6 +82,9 @@ export default function EnquiryForm(props) {
                         <FormErrorMessage>
                             {errors.email && errors.email.message}
                         </FormErrorMessage>
+                    </FormControl>
+
+                    <FormControl isInvalid={errors.phoneNumber}>
                         <FormLabel htmlFor='phone'>Phone Number</FormLabel>
                         <Input
                             id='phoneNumber'
@@ -85,6 +97,9 @@ export default function EnquiryForm(props) {
                         <FormErrorMessage>
                             {errors.phoneNumber && errors.phoneNumber.message}
                         </FormErrorMessage>
+                    </FormControl>
+
+                    <FormControl isInvalid={errors.functionType}>
                         <FormLabel htmlFor='functionType'>Function Type</FormLabel>
                         <Input
                             id='functionType'
@@ -96,6 +111,23 @@ export default function EnquiryForm(props) {
                         <FormErrorMessage>
                             {errors.functionType && errors.functionType.message}
                         </FormErrorMessage>
+                    </FormControl>
+
+                    <FormControl isInvalid={errors.location}>
+                        <FormLabel htmlFor='location'>Location</FormLabel>
+                        <Input
+                            id='location'
+                            placeholder='Location'
+                            {...register('location', {
+                                required: 'Please provide the location of your event.',
+                            })}
+                        />
+                        <FormErrorMessage>
+                            {errors.location && errors.location.message}
+                        </FormErrorMessage>
+                    </FormControl>
+
+                    <FormControl isInvalid={errors.venueDetails}>
                         <FormLabel htmlFor='venueDetails'>Venue Details</FormLabel>
                         <Input
                             id='venueDetails'
@@ -107,6 +139,9 @@ export default function EnquiryForm(props) {
                         <FormErrorMessage>
                             {errors.venueDetails && errors.venueDetails.message}
                         </FormErrorMessage>
+                    </FormControl>
+                    
+                    <FormControl isInvalid={errors.eventDate}>
                         <FormLabel htmlFor='eventDate'>Event Date</FormLabel>
                         <Input
                             id='eventDate'
@@ -118,6 +153,9 @@ export default function EnquiryForm(props) {
                         <FormErrorMessage>
                             {errors.eventDate && errors.eventDate.message}
                         </FormErrorMessage>
+                    </FormControl>
+
+                    <FormControl isInvalid={errors.performanceStartTime}>
                         <FormLabel htmlFor='performanceStartTime'>Performance Start Time</FormLabel>
                         <Input
                             id='performanceStartTime'
@@ -129,6 +167,9 @@ export default function EnquiryForm(props) {
                         <FormErrorMessage>
                             {errors.performanceStartTime && errors.performanceStartTime.message}
                         </FormErrorMessage>
+                    </FormControl>
+
+                    <FormControl isInvalid={errors.performanceDuration}>
                         <FormLabel htmlFor='performanceDuration'>Performance Duration</FormLabel>
                         <Input
                             placeholder='Length of the performance'
@@ -139,22 +180,14 @@ export default function EnquiryForm(props) {
                         <FormErrorMessage>
                             {errors.performanceDuration && errors.performanceDuration.message}
                         </FormErrorMessage>
-                        <FormLabel htmlFor='budget'>Budget</FormLabel>
-                        <Input
-                            id='budget'
-                            type="number"
-                            placeholder='Your budget'
-                            {...register('budget', {
-                                required: 'Please provide information about your budget',
-                            })}
-                        />
-                        <FormErrorMessage>
-                            {errors.budget && errors.budget.message}
-                        </FormErrorMessage>
+                    </FormControl>
+
+                    <FormControl className="chakra-form-control--last">
                         <FormLabel htmlFor='otherDetails'>Other Details</FormLabel>
-                        <Input
+                        <Textarea
                             id='otherDetails'
                             placeholder='Any other details'
+                            {...register('otherDetails', {})}
                         />
                     </FormControl>
                     <Button isLoading={isSubmitting} type='submit'>
