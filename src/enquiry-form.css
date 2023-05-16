@@ -16,3 +16,17 @@
     width: 100%;
     border: 1px solid rgb(26, 32, 44);
 }
+
+.enquiry-form input:hover,
+.enquiry-form input[type="email"]:hover,
+.enquiry-form textarea:hover {
+    border-color: var(--chakra-colors-gray-300);
+}
+
+.enquiry-form input:focus-visible,
+.enquiry-form input[type="email"]:focus-visible,
+.enquiry-form textarea:focus-visible {
+    z-index: 1;
+    border-color: rgb(49, 130, 206);
+    box-shadow: rgb(49, 130, 206) 0px 0px 0px 1px;
+}
