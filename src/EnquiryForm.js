@@ -46,7 +46,7 @@ export default function EnquiryForm(props) {
     console.log(errors);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className='enquiry-form'>
             {
                 isSuccessfullySubmitted ?
                 <Alert status='success'>

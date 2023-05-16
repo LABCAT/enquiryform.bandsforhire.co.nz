@@ -9,3 +9,12 @@
 .chakra-form-control--last {
     margin-bottom: 30px;
 }
+
+.enquiry-form input,
+.enquiry-form textarea {
+    border: 1px solid rgb(26, 32, 44);
+}
+
+.enquiry-form input[type="email"] {
+    width: 100%;
+}
