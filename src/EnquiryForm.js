@@ -1,49 +1,119 @@
-import { useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Directus } from "@directus/sdk";
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import './enquiry-form.css';
 
 import {
+    Center,
+    VStack,
     FormErrorMessage,
     FormLabel,
     FormControl,
+    CheckboxGroup,
+    Checkbox,
     Input,
     Textarea,
     Button,
     Alert,
     AlertIcon,
+    Spinner 
 } from '@chakra-ui/react'
 
 export default function EnquiryForm(props) {
+    const directus = useMemo(
+        () => new Directus('https://bandsforhire.mysite.digital'),
+        []
+    );
+    const [loading, setLoading] = useState(true);
+    const [performanceDurations, setPerformanceDurations] = useState([]);
+    const [performanceOptions, setPerformanceOptions] = useState([]);
     const [isSuccessfullySubmitted, setIsSuccessfullySubmitted] = useState(false);
 
     const {
         handleSubmit,
         register,
+        control,
         formState: { errors, isSubmitting },
     } = useForm()
 
     async function onSubmit(values) {
         console.log(values);
-        const directus = new Directus('https://bandsforhire.mysite.digital');
-        // const directus = new Directus('http://localhost:8055');
-        const response = await directus.items('booking_enquiry').createOne({
+        const data = {
             name: values.name,
             email: values.email,
             phone_number: values.phoneNumber,
-            function_type: values.functionType,
+            tour_type: values.functionType,
             location: values.location,
             venue_details: values.venueDetails,
             event_date: values.eventDate,
             performance_start_time: values.performanceStartTime,
-            performance_duration: values.performanceDuration,
             other_details: values.otherDetails,
-            artist: props.artistID
-        });
-        setIsSuccessfullySubmitted(true);
+            artist: props.artistID,
+            event_durations: values.performanceDurations.map(
+                (value) => { 
+                    return {
+                        performance_duration_id: value
+                    }
+                }
+            ),
+            event_options: values.performanceOptions.map(
+                (value) => { 
+                    return {
+                        performance_option_id: value
+                    }
+                }
+            ),
+        }
+        await directus.items('booking_enquiry').createOne(data).then(
+            (enquiry) =>{
+                setIsSuccessfullySubmitted(true);
+            }
+        );
+        
     }
 
-    console.log(errors);
+    useEffect(() => {
+        let mounted = true;
+
+        if(loading && mounted) {
+            (
+                async () => {
+                    await directus.items('artist').readOne(
+                        props.artistID,
+                        { fields: ['*', '*.*.*'] }
+                    )
+                    .then((response) => {
+                        console.log(response);
+                        setPerformanceOptions(
+                            response?.performance_options.map(
+                                (option) => { 
+                                    return {
+                                        id: option?.performance_option_id.id,
+                                        title: option?.performance_option_id.title,
+                                    }
+                                }
+                            )
+                        );
+                        setPerformanceDurations(
+                            response?.performance_durations.map(
+                                (option) => { 
+                                    return {
+                                        id: option?.performance_duration_id.id,
+                                        title: option?.performance_duration_id.title,
+                                    }
+                                }
+                            )
+                        );
+                        setLoading(false);
+                    }).catch((error) => {
+                        setLoading(false);
+                    });
+                }
+            )();
+        }
+
+        return () => mounted = false; // cleanup function
+    }, [directus, loading, props.artistID]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className='enquiry-form'>
@@ -169,18 +239,83 @@ export default function EnquiryForm(props) {
                         </FormErrorMessage>
                     </FormControl>
 
-                    <FormControl isInvalid={errors.performanceDuration}>
-                        <FormLabel htmlFor='performanceDuration'>Performance Duration</FormLabel>
-                        <Input
-                            placeholder='Length of the performance'
-                            {...register('performanceDuration', {
-                                required: 'Please provide details how long your would like the performance to be',
-                            })}
-                        />
-                        <FormErrorMessage>
-                            {errors.performanceDuration && errors.performanceDuration.message}
-                        </FormErrorMessage>
-                    </FormControl>
+                    {
+                        loading 
+                        ? <Center mb='15px'>
+                            <Spinner 
+                                thickness='4px'
+                                speed='0.65s'
+                                size='xl'
+                            />
+                        </Center>
+                        : <>
+                            {
+                                performanceDurations.length &&
+                                <FormControl isInvalid={errors.performanceDurations}>
+                                    <FormLabel htmlFor='performanceDurations'>Performance Duration</FormLabel>
+                                    <Controller
+                                        name="performanceDurations"
+                                        control={control}
+                                        render={({ field: { ref, ...rest } }) => (
+                                            <CheckboxGroup colorScheme='blue' {...rest}>
+                                                <VStack spacing={[1, 5]} align="left">
+                                                    {
+                                                        performanceDurations.map(
+                                                            (duration) => {
+                                                                return (
+                                                                    <Checkbox value={duration.id.toString()} key={duration.id}>{duration.title}</Checkbox>
+                                                                )
+                                                                
+                                                            }
+                                                        )
+                                                    }
+                                                </VStack>
+                                            </CheckboxGroup>
+                                        )}
+                                        rules={{
+                                            required: { value: true, message: "Please select at least one" }
+                                        }}
+                                    />
+                                    <FormErrorMessage>
+                                        {errors.performanceDurations && errors.performanceDurations.message}
+                                    </FormErrorMessage>
+                                </FormControl>
+                            }
+                            {
+                                performanceOptions.length &&
+                                <FormControl isInvalid={errors.performanceOptions}>
+                                    <FormLabel htmlFor='performanceOptions'>Performance Options</FormLabel>
+                                    <Controller
+                                        name="performanceOptions"
+                                        control={control}
+                                        render={({ field: { ref, ...rest } }) => (
+                                            <CheckboxGroup colorScheme='blue' {...rest}>
+                                            <VStack spacing={[1, 5]} align="left">
+                                                {
+                                                    performanceOptions.map(
+                                                        (option) => {
+                                                            return (
+                                                                <Checkbox value={option.id.toString()} key={option.id}>{option.title}</Checkbox>
+                                                            )
+                                                            
+                                                        }
+                                                    )
+                                                }
+                                            </VStack >
+                                        </CheckboxGroup>
+                                        )}
+                                        rules={{
+                                            required: { value: true, message: "Please select at least one" }
+                                        }}
+                                    />
+                                    
+                                    <FormErrorMessage>
+                                        {errors.performanceOptions && errors.performanceOptions.message}
+                                    </FormErrorMessage>
+                                </FormControl>
+}
+                        </>
+                    }
 
                     <FormControl className="chakra-form-control--last">
                         <FormLabel htmlFor='otherDetails'>Other Details</FormLabel>
