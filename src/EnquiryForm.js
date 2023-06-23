@@ -37,7 +37,6 @@ export default function EnquiryForm(props) {
     } = useForm()
 
     async function onSubmit(values) {
-        console.log(values);
         const data = {
             name: values.name,
             email: values.email,
@@ -83,7 +82,6 @@ export default function EnquiryForm(props) {
                         { fields: ['*', '*.*.*'] }
                     )
                     .then((response) => {
-                        console.log(response);
                         setPerformanceOptions(
                             response?.performance_options.map(
                                 (option) => { 
