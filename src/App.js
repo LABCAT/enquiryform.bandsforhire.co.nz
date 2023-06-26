@@ -17,10 +17,15 @@ function App(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
+    const modalOpener = (evt) => {
+      evt.stopImmediatePropagation();
+      onOpen()
+    }
+
     const tabListener = () => {
       document.querySelectorAll("[href='#get-a-quote']").forEach(
         (el) => {
-          el.addEventListener('click', onOpen);
+          el.addEventListener('click', (evt) => modalOpener(evnt));
         }
       );
     }
@@ -31,7 +36,7 @@ function App(props) {
       window.removeEventListener('DOMContentLoaded', tabListener);
       document.querySelectorAll("[href='#get-a-quote']").forEach(
         (el) => {
-          el.removeEventListener('click', onOpen);
+          el.removeEventListener('click', (evt) => modalOpener(evnt));
         }
       );
     };
