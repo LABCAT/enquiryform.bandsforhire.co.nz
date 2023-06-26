@@ -25,7 +25,7 @@ function App(props) {
     const tabListener = () => {
       document.querySelectorAll("[href='#get-a-quote']").forEach(
         (el) => {
-          el.addEventListener('click', (evt) => modalOpener(evnt));
+          el.addEventListener('click', (evt) => modalOpener(evt));
         }
       );
     }
@@ -36,7 +36,7 @@ function App(props) {
       window.removeEventListener('DOMContentLoaded', tabListener);
       document.querySelectorAll("[href='#get-a-quote']").forEach(
         (el) => {
-          el.removeEventListener('click', (evt) => modalOpener(evnt));
+          el.removeEventListener('click', (evt) => modalOpener(evt));
         }
       );
     };
