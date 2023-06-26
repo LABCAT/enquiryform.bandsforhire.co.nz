@@ -1,3 +1,11 @@
+.chakra-modal__close-btn {
+    color: #1A202C;
+}
+
+.chakra-modal__close-btn:hover {
+    color: #ffffff;
+}
+
 .chakra-modal__content {
     padding-bottom: 15px;
 }
@@ -8,6 +16,10 @@
 
 .chakra-form-control--last {
     margin-bottom: 30px;
+}
+
+.chakra-checkbox {
+
 }
 
 .enquiry-form input,
