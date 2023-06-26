@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   ChakraProvider,
   Modal,
@@ -14,7 +14,28 @@ import {
 import EnquiryForm from './EnquiryForm';
 
 function App(props) {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    const tabListener = () => {
+      document.querySelectorAll("[href='#get-a-quote']").forEach(
+        (el) => {
+          el.addEventListener('click', onOpen);
+        }
+      );
+    }
+
+    window.addEventListener('DOMContentLoaded', tabListener);
+
+    return () => {
+      window.removeEventListener('DOMContentLoaded', tabListener);
+      document.querySelectorAll("[href='#get-a-quote']").forEach(
+        (el) => {
+          el.removeEventListener('click', onOpen);
+        }
+      );
+    };
+  }, [onOpen]);
   
   return (
     <ChakraProvider theme={theme}>
