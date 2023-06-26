@@ -21,7 +21,7 @@ import {
 
 export default function EnquiryForm(props) {
     const directus = useMemo(
-        () => new Directus('https://bandsforhire.mysite.digital'),
+        () => new Directus('https://dashboard.bandsforhire.co.nz'),
         []
     );
     const [loading, setLoading] = useState(true);
