@@ -14,7 +14,13 @@
 .enquiry-form input[type="email"],
 .enquiry-form textarea {
     width: 100%;
+    padding: 0 16px;
     border: 1px solid rgb(26, 32, 44);
+    font-family: Roboto,sans-serif;
+    font-size: 16px;
+    color: #1a1a1a;
+    background-color: transparent;
+    border-radius: 0;
 }
 
 .enquiry-form input:hover,
