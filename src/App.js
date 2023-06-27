@@ -17,35 +17,24 @@ function App(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    const modalOpener = (evt) => {
-      evt.preventDefault();
-      evt.stopImmediatePropagation();
-      onOpen();
-    }
-
-    const tabListener = () => {
+    const tabReplacer = () => {
       document.querySelectorAll("[href='#get-a-quote']").forEach(
         (el) => {
-          el.addEventListener('click', (evt) => modalOpener(evt));
+          el.replaceWith(document.getElementById('root'));
         }
       );
     }
 
-    window.addEventListener('DOMContentLoaded', tabListener);
+    window.addEventListener('DOMContentLoaded', tabReplacer);
 
     return () => {
-      window.removeEventListener('DOMContentLoaded', tabListener);
-      document.querySelectorAll("[href='#get-a-quote']").forEach(
-        (el) => {
-          el.removeEventListener('click', (evt) => modalOpener(evt));
-        }
-      );
+      window.removeEventListener('DOMContentLoaded', tabReplacer);
     };
-  }, [onOpen]);
+  }, []);
   
   return (
     <ChakraProvider theme={theme}>
-      <Button onClick={onOpen}>GET A QUOTE</Button>
+      <Button onClick={onOpen} id="get-a-quote-modal-trigger">GET A QUOTE</Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

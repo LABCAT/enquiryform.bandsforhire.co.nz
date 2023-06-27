@@ -22,6 +22,25 @@
     border-color: #E2E8F0;
 }
 
+#get-a-quote-modal-trigger {
+    display: block;
+    padding: 10px 20px;
+    margin: 0 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #625bf2;
+    line-height: 1.7em;
+    color: #fff;
+}
+
+#get-a-quote-modal-trigger:hover {
+    background-color: #2e2a8f;
+}
+
 .enquiry-form input,
 .enquiry-form input[type="email"],
 .enquiry-form textarea {
