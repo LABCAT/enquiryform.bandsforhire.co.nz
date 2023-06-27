@@ -18,8 +18,9 @@ function App(props) {
 
   useEffect(() => {
     const modalOpener = (evt) => {
+      evt.preventDefault();
       evt.stopImmediatePropagation();
-      onOpen()
+      onOpen();
     }
 
     const tabListener = () => {
