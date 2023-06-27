@@ -18,11 +18,8 @@ function App(props) {
 
   useEffect(() => {
     const tabReplacer = () => {
-      console.log(document.querySelectorAll("[href='#get-a-quote']"));
       document.querySelectorAll("[href='#get-a-quote']").forEach(
         (el) => {
-          console.log(el);
-          console.log(document.getElementById('root'));
           el.replaceWith(document.getElementById('root'));
         }
       );
