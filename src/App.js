@@ -20,6 +20,8 @@ function App(props) {
     const tabReplacer = () => {
       document.querySelectorAll("[href='#get-a-quote']").forEach(
         (el) => {
+          console.log(el);
+          console.log(document.getElementById('root'));
           el.replaceWith(document.getElementById('root'));
         }
       );
