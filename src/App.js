@@ -28,11 +28,9 @@ function App(props) {
       );
     }
 
-    window.addEventListener('DOMContentLoaded', tabReplacer);
+    tabReplacer();
 
-    return () => {
-      window.removeEventListener('DOMContentLoaded', tabReplacer);
-    };
+    return () => {};
   }, []);
   
   return (
