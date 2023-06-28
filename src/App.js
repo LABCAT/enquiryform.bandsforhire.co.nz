@@ -31,7 +31,7 @@ function App(props) {
   }, []);
   
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={theme} resetCSS={false}>
       <Button onClick={onOpen} id="get-a-quote-modal-trigger">GET A QUOTE</Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
