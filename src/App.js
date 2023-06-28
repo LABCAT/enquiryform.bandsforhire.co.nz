@@ -23,7 +23,7 @@ function App(props) {
           fontFamily: null,
           lineHeight: null,
           color:  null,
-          background: null,
+          backgroundColor: null,
         }
       }
     }
