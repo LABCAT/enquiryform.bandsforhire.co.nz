@@ -41,7 +41,7 @@ export default function EnquiryForm(props) {
             name: values.name,
             email: values.email,
             phone_number: values.phoneNumber,
-            tour_type: values.functionType,
+            function_type: values.functionType,
             location: values.location,
             venue_details: values.venueDetails,
             event_date: values.eventDate,
