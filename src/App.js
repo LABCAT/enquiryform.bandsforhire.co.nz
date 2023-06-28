@@ -9,12 +9,25 @@ import {
   ModalBody,
   Button,
   useDisclosure,
-  theme,
+  extendTheme,
 } from '@chakra-ui/react';
 import EnquiryForm from './EnquiryForm';
 
 function App(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const customTheme = extendTheme({
+    styles: {
+      global: {
+        body: {
+          fontFamily: null,
+          lineHeight: null,
+          color:  null,
+          background: null,
+        }
+      }
+    }
+  });
 
   useEffect(() => {
     const tabReplacer = () => {
@@ -31,7 +44,7 @@ function App(props) {
   }, []);
   
   return (
-    <ChakraProvider theme={theme} resetCSS={false}>
+    <ChakraProvider theme={customTheme} resetCSS={false}>
       <Button onClick={onOpen} id="get-a-quote-modal-trigger">GET A QUOTE</Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
