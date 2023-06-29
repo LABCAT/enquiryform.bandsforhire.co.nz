@@ -48,20 +48,20 @@ export default function EnquiryForm(props) {
             performance_start_time: values.performanceStartTime,
             other_details: values.otherDetails,
             artist: props.artistID,
-            event_durations: values.performanceDurations.map(
+            event_durations: values.performanceDurations ? values.performanceDurations.map(
                 (value) => { 
                     return {
                         performance_duration_id: value
                     }
                 }
-            ),
-            event_options: values.performanceOptions.map(
+            ) : [],
+            event_options: values.performanceOptions ? values.performanceOptions.map(
                 (value) => { 
                     return {
                         performance_option_id: value
                     }
                 }
-            ),
+            ) : [],
         }
         await directus.items('booking_enquiry').createOne(data).then(
             (enquiry) =>{
@@ -248,8 +248,8 @@ export default function EnquiryForm(props) {
                         </Center>
                         : <>
                             {
-                                performanceDurations.length &&
-                                <FormControl isInvalid={errors.performanceDurations}>
+                                performanceDurations.length 
+                                ? <FormControl isInvalid={errors.performanceDurations}>
                                     <FormLabel htmlFor='performanceDurations'>Performance Duration</FormLabel>
                                     <Controller
                                         name="performanceDurations"
@@ -278,11 +278,12 @@ export default function EnquiryForm(props) {
                                         {errors.performanceDurations && errors.performanceDurations.message}
                                     </FormErrorMessage>
                                 </FormControl>
+                                : <></>
                             }
                             {
-                                performanceOptions.length &&
-                                <FormControl isInvalid={errors.performanceOptions}>
-                                    <FormLabel htmlFor='performanceOptions'>Performance Options</FormLabel>
+                                performanceOptions.length 
+                                ?   <FormControl isInvalid={errors.performanceOptions}>
+                                        <FormLabel htmlFor='performanceOptions'>Performance Options</FormLabel>
                                     <Controller
                                         name="performanceOptions"
                                         control={control}
@@ -311,7 +312,8 @@ export default function EnquiryForm(props) {
                                         {errors.performanceOptions && errors.performanceOptions.message}
                                     </FormErrorMessage>
                                 </FormControl>
-}
+                                : <></>
+                            }
                         </>
                     }
 
