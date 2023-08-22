@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Directus } from "@directus/sdk";
 import {
   ChakraProvider,
   Modal,
@@ -15,7 +16,7 @@ import EnquiryForm from './EnquiryForm';
 
 function App(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const [artistID, setArtistID] = useState();
   const customTheme = extendTheme({
     styles: {
       global: {
@@ -29,6 +30,11 @@ function App(props) {
     }
   });
 
+  const directus = useMemo(
+    () => new Directus('https://dashboard.bandsforhire.co.nz'),
+    []
+  );
+
   useEffect(() => {
     const tabReplacer = () => {
       document.querySelectorAll("[href='#get-a-quote']").forEach(
@@ -37,11 +43,32 @@ function App(props) {
         }
       );
     }
+    (async () => {
 
-    tabReplacer();
+      console.log(props);
+      await directus.items('artist').readByQuery({
+        fields: ['*'],
+        filter: {
+          shopify_id: {
+            _eq: props.shopifyID,
+          },
+        },
+        limit: -1,
+      }).then(
+        (response) =>{
+          const { data } = response;
+          // there should only be one artist with the required Shopify ID
+          if(data.length === 1) {
+            const artist = data[0];
+            setArtistID(artist.id);
+            tabReplacer();
+          }
+        }
+      );
+    })();
 
     return () => {};
-  }, []);
+  });
   
   return (
     <ChakraProvider theme={customTheme} resetCSS={false}>
@@ -52,7 +79,7 @@ function App(props) {
           <ModalHeader>For a free quote fill in the form below</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <EnquiryForm artistID={props.artistID}/>
+            <EnquiryForm artistID={artistID}/>
           </ModalBody>
         </ModalContent>
       </Modal>
