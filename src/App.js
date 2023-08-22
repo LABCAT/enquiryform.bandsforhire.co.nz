@@ -44,8 +44,6 @@ function App(props) {
       );
     }
     (async () => {
-
-      console.log(props);
       await directus.items('artist').readByQuery({
         fields: ['*'],
         filter: {
@@ -72,7 +70,7 @@ function App(props) {
   
   return (
     <ChakraProvider theme={customTheme} resetCSS={false}>
-      <Button onClick={onOpen} id="get-a-quote-modal-trigger">GET A QUOTE</Button>
+      { artistID && <Button onClick={onOpen} id="get-a-quote-modal-trigger">GET A QUOTE</Button> }
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
