@@ -5,7 +5,6 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalCloseButton,
   ModalBody,
   Button,
@@ -74,7 +73,6 @@ function App(props) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>For a free quote fill in the form below</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <EnquiryForm artistID={artistID}/>

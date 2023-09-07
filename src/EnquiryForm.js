@@ -122,6 +122,9 @@ export default function EnquiryForm(props) {
                     Your enquiry has been received.
                 </Alert> :
                 <>
+                    <Alert status='info'>
+                        For a free quote fill in the form below 
+                    </Alert>
                     <FormControl isInvalid={errors.name}>
                         <FormLabel htmlFor='name'>Name</FormLabel>
                         <Input
