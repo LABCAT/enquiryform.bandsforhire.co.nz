@@ -83,3 +83,7 @@
 .enquiry-form button[type="submit"]:hover {
     background-color: #2e2a8f;
 }
+
+.enquiry-form__alert {
+    color: black;
+}

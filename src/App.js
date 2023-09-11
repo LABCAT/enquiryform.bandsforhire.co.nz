@@ -5,6 +5,7 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
+  ModalHeader,
   ModalCloseButton,
   ModalBody,
   Button,
@@ -73,6 +74,7 @@ function App(props) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
+          <ModalHeader>&nbsp;</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <EnquiryForm artistID={artistID}/>

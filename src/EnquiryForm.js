@@ -117,12 +117,13 @@ export default function EnquiryForm(props) {
         <form onSubmit={handleSubmit(onSubmit)} className='enquiry-form'>
             {
                 isSuccessfullySubmitted ?
-                <Alert status='success'>
+                <Alert status='success' className='enquiry-form__alert'>
                     <AlertIcon />
                     Your enquiry has been received.
                 </Alert> :
                 <>
-                    <Alert status='info'>
+                    <Alert status='info' className='enquiry-form__alert'>
+                        <AlertIcon />
                         For a free quote fill in the form below 
                     </Alert>
                     <FormControl isInvalid={errors.name}>
