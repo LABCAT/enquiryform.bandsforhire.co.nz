@@ -1,3 +1,28 @@
+#get-a-quote-modal-trigger {
+    display: block;
+    width: auto;
+    min-width: auto;
+    height: auto;
+    padding: 10px 20px;
+    margin: 0 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #625bf2;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.7em;
+    color: #fff;
+}
+
+#get-a-quote-modal-trigger:hover {
+    background-color: #2e2a8f;
+}
+
 .chakra-modal__close-btn {
     color: #1A202C;
 }
@@ -22,29 +47,9 @@
     border-color: #E2E8F0;
 }
 
-#get-a-quote-modal-trigger {
-    display: block;
-    width: auto;
-    min-width: auto;
-    height: auto;
-    padding: 10px 20px;
-    margin: 0 0 15px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background-color: #625bf2;
-    font-family: 'Roboto', sans-serif !important;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.7em;
-    color: #fff;
-}
-
-#get-a-quote-modal-trigger:hover {
-    background-color: #2e2a8f;
+.enquiry-form label {
+    color: #1a1a1a;
+    border-color: #1a202c;
 }
 
 .enquiry-form input,
@@ -86,4 +91,28 @@
 
 .enquiry-form__alert {
     color: black;
+}
+
+.enquiry-form__date-field-holder {
+    position: relative;
+}
+
+.enquiry-form__date-field {
+    opacity: 0;
+}
+
+.enquiry-form__date-display {
+    position: absolute!important;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.enquiry-form__date-icon {
+    position: absolute!important;
+    right: -25px!important;
+    z-index: 0!important;
 }
