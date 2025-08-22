@@ -1,4 +1,50 @@
+# Booking Enquiries
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Deployment
+
+This application is configured for deployment on [Cloudflare Pages](https://pages.cloudflare.com/).
+
+### Deploying to Cloudflare Pages
+
+1. **Fork or clone this repository** to your GitHub account
+
+2. **Connect to Cloudflare Pages:**
+   - Go to [Cloudflare Dashboard](https://dash.cloudflare.com/)
+   - Navigate to "Pages" in the sidebar
+   - Click "Create a project"
+   - Select "Connect to Git"
+   - Choose your GitHub repository
+
+3. **Configure build settings:**
+   - **Framework preset:** Create React App
+   - **Build command:** `npm run build`
+   - **Build output directory:** `build`
+   - **Root directory:** `/` (leave empty)
+   - **Node.js version:** 18 (or higher)
+
+4. **Environment variables (if needed):**
+   - Add any required environment variables in the Cloudflare Pages dashboard
+   - Common variables might include API keys or configuration values
+
+5. **Deploy:**
+   - Click "Save and Deploy"
+   - Cloudflare Pages will automatically build and deploy your application
+   - Each push to the main branch will trigger a new deployment
+
+### Custom Domain Setup
+
+To use a custom domain (e.g., `booking-enquiries.labcat.nz`):
+
+1. In your Cloudflare Pages project dashboard, go to "Custom domains"
+2. Add your custom domain
+3. Update your DNS settings to point to Cloudflare Pages
+4. The CNAME file in the `public/` directory will be automatically handled
+
+### Local Development
+
+For local development, the standard Create React App commands work as expected:
 
 ## Available Scripts
 
@@ -58,10 +104,6 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/ma
 ### Advanced Configuration
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 
 ### `npm run build` fails to minify
 
