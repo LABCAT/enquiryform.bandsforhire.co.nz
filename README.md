@@ -4,43 +4,99 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Deployment
 
-This application is configured for deployment on [Cloudflare Pages](https://pages.cloudflare.com/).
+This application is configured for deployment on [Cloudflare Pages](https://pages.cloudflare.com/) using the Wrangler CLI.
+
+### Prerequisites
+
+1. **Install Wrangler CLI:**
+   ```bash
+   npm install -g wrangler
+   ```
+
+2. **Login to Cloudflare:**
+   ```bash
+   wrangler login
+   ```
 
 ### Deploying to Cloudflare Pages
 
-1. **Fork or clone this repository** to your GitHub account
+1. **Build the application:**
+   ```bash
+   npm run build
+   ```
 
-2. **Connect to Cloudflare Pages:**
-   - Go to [Cloudflare Dashboard](https://dash.cloudflare.com/)
-   - Navigate to "Pages" in the sidebar
-   - Click "Create a project"
-   - Select "Connect to Git"
-   - Choose your GitHub repository
+2. **Deploy using Wrangler:**
+   ```bash
+   wrangler pages deploy build
+   ```
 
-3. **Configure build settings:**
-   - **Framework preset:** Create React App
-   - **Build command:** `npm run build`
-   - **Build output directory:** `build`
-   - **Root directory:** `/` (leave empty)
-   - **Node.js version:** 18 (or higher)
+3. **For production deployment with a project name:**
+   ```bash
+   wrangler pages deploy build --project-name=booking-enquiries
+   ```
 
-4. **Environment variables (if needed):**
-   - Add any required environment variables in the Cloudflare Pages dashboard
-   - Common variables might include API keys or configuration values
+### Setting up Continuous Deployment
 
-5. **Deploy:**
-   - Click "Save and Deploy"
-   - Cloudflare Pages will automatically build and deploy your application
-   - Each push to the main branch will trigger a new deployment
+To enable automatic deployments on git push:
+
+1. **Create a Cloudflare Pages project:**
+   ```bash
+   wrangler pages project create booking-enquiries
+   ```
+
+2. **Connect your GitHub repository:**
+   - Go to [Cloudflare Dashboard](https://dash.cloudflare.com/) → Pages
+   - Select your project
+   - Go to Settings → Git integration
+   - Connect your GitHub repository
+   - Configure build settings:
+     - Build command: `npm run build`
+     - Build output directory: `build`
+     - Root directory: `/`
+
+### Environment Variables
+
+Set environment variables for your deployment:
+
+```bash
+# Set environment variables
+wrangler pages secret put MY_API_KEY
+
+# Or set them in the Cloudflare Dashboard
+# Go to your project → Settings → Environment variables
+```
 
 ### Custom Domain Setup
 
 To use a custom domain (e.g., `booking-enquiries.labcat.nz`):
 
-1. In your Cloudflare Pages project dashboard, go to "Custom domains"
-2. Add your custom domain
-3. Update your DNS settings to point to Cloudflare Pages
-4. The CNAME file in the `public/` directory will be automatically handled
+1. **Add custom domain via CLI:**
+   ```bash
+   wrangler pages domain add booking-enquiries.labcat.nz
+   ```
+
+2. **Or via Dashboard:**
+   - Go to your project → Custom domains
+   - Add your custom domain
+   - Update DNS settings to point to Cloudflare Pages
+
+### Development Workflow
+
+For local development and testing:
+
+```bash
+# Start development server
+npm start
+
+# Build for production
+npm run build
+
+# Deploy to staging
+wrangler pages deploy build --project-name=booking-enquiries --branch=staging
+
+# Deploy to production
+wrangler pages deploy build --project-name=booking-enquiries
+```
 
 ### Local Development
 
