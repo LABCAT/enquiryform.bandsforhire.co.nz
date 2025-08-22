@@ -28,6 +28,9 @@ export default function EnquiryForm(props) {
     const [performanceDurations, setPerformanceDurations] = useState([]);
     const [performanceOptions, setPerformanceOptions] = useState([]);
     const [isSuccessfullySubmitted, setIsSuccessfullySubmitted] = useState(false);
+    
+    // Detect Safari browser
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
     const {
         handleSubmit,
@@ -232,6 +235,7 @@ export default function EnquiryForm(props) {
                         <Input
                             id='performanceStartTime'
                             type="time"
+                            defaultValue={isSafari ? "19:00" : ""}
                             {...register('performanceStartTime', {
                                 required: 'What time do you want the performance to start?',
                             })}
