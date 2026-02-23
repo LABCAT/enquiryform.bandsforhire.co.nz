@@ -1,6 +1,7 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import { Directus } from "@directus/sdk";
 import { useForm, Controller } from 'react-hook-form';
+
 import './enquiry-form.css';
 
 import {
@@ -12,6 +13,8 @@ import {
     CheckboxGroup,
     Checkbox,
     Input,
+    InputGroup,
+    InputRightElement,
     Textarea,
     Button,
     Alert,
@@ -19,12 +22,15 @@ import {
     Spinner 
 } from '@chakra-ui/react'
 
+import { CalendarIcon } from '@chakra-ui/icons'
+
 export default function EnquiryForm(props) {
     const directus = useMemo(
         () => new Directus('https://dashboard.bandsforhire.co.nz'),
         []
     );
     const [loading, setLoading] = useState(true);
+    const [startDate, setStartDate] = useState('');
     const [performanceDurations, setPerformanceDurations] = useState([]);
     const [performanceOptions, setPerformanceOptions] = useState([]);
     const [isSuccessfullySubmitted, setIsSuccessfullySubmitted] = useState(false);
@@ -32,12 +38,22 @@ export default function EnquiryForm(props) {
     // Detect Safari browser
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
+    const dateInputRef = useRef();
     const {
         handleSubmit,
         register,
         control,
         formState: { errors, isSubmitting },
     } = useForm()
+    const { ref, ...rest } = register(
+        'eventDate',
+        {
+            required: 'Please provide the date of your event',
+            onChange: (e) => {
+                setStartDate(e.target.value);
+            },
+        }
+    );
 
     async function onSubmit(values) {
         const data = {
@@ -45,6 +61,7 @@ export default function EnquiryForm(props) {
             email: values.email,
             phone_number: values.phoneNumber,
             function_type: values.functionType,
+            guest_numbers: values.guestNumbers,
             location: values.location,
             venue_details: values.venueDetails,
             event_date: values.eventDate,
@@ -66,12 +83,12 @@ export default function EnquiryForm(props) {
                 }
             ) : [],
         }
+
         await directus.items('booking_enquiry').createOne(data).then(
             (enquiry) =>{
                 setIsSuccessfullySubmitted(true);
             }
         );
-        
     }
 
     useEffect(() => {
@@ -188,6 +205,21 @@ export default function EnquiryForm(props) {
                         </FormErrorMessage>
                     </FormControl>
 
+                    <FormControl isInvalid={errors.guestNumbers}>
+                        <FormLabel htmlFor='guestNumbers'>Guest Numbers</FormLabel>
+                        <Input
+                            id='guestNumbers'
+                            type="number"
+                            placeholder='eg, 10, 20, 50, 100...'
+                            {...register('guestNumbers', {
+                                required: 'Please let us know how many people you are expecting to attend the event',
+                            })}
+                        />
+                        <FormErrorMessage>
+                            {errors.guestNumbers && errors.guestNumbers.message}
+                        </FormErrorMessage>
+                    </FormControl>
+
                     <FormControl isInvalid={errors.location}>
                         <FormLabel htmlFor='location'>Location</FormLabel>
                         <Input
@@ -218,13 +250,52 @@ export default function EnquiryForm(props) {
                     
                     <FormControl isInvalid={errors.eventDate}>
                         <FormLabel htmlFor='eventDate'>Event Date</FormLabel>
-                        <Input
-                            id='eventDate'
-                            type="date"
-                            {...register('eventDate', {
-                                required: 'Please provide the date of your event',
-                            })}
-                        />
+                        <InputGroup className='enquiry-form__date-field-holder'>
+                            <Input 
+                                id='eventDate'
+                                type="date"
+                                className={!isSafari ? 'enquiry-form__date-field' : ''}
+                                {...register('eventDate', {
+                                    required: 'Please provide the date of your event',
+                                })}
+                                ref={(e) => {
+                                    ref(e)
+                                    dateInputRef.current = e 
+                                }}
+                            />
+                            {
+                                !isSafari &&
+                                <>
+                                    <Input 
+                                        value={
+                                            !startDate ? '' : 
+                                            new Date(startDate).toLocaleDateString(
+                                                "en-NZ", 
+                                                {
+                                                    weekday: 'long',
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric'
+                                                }
+                                            ) 
+                                        } 
+                                        className='enquiry-form__date-display'
+                                        onClick={() => { 
+                                            dateInputRef.current.click(); 
+                                            dateInputRef.current.showPicker(); 
+                                        }}
+                                        onChange={() => {
+                                            document.getElementById('performanceStartTime').click()
+                                        }}
+                                        readOnly
+                                        {...register('dateDisplay')}
+                                    />
+                                    <InputRightElement className='enquiry-form__date-icon'>
+                                        <CalendarIcon color='black' />
+                                    </InputRightElement>
+                                </>
+                            }
+                        </InputGroup>
                         <FormErrorMessage>
                             {errors.eventDate && errors.eventDate.message}
                         </FormErrorMessage>
